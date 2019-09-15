@@ -59,9 +59,9 @@ function createTable(chosen,list) {
             Plotly.newPlot('bar', data)
         }
     }
-    //console.log(`This is the list chosen ${list}`);
-    //for (var i=0;i< datalist.length;i++){
 };
+
+
 
 buildropdown();
 /*
