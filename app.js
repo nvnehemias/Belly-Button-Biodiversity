@@ -30,7 +30,7 @@ function handleSubmit() {
                 selection1.enter()
                         .append("p")
                         .merge(selection1)
-                        .text(function (d) {return `${Object.keys(d)} : ${Object.values(d)}`})
+                        .text(function (d) {return `${Object.keys(d)}: ${Object.values(d)}`})
                 break
             }
         }
