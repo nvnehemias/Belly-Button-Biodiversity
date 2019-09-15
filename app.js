@@ -1,18 +1,3 @@
-
-function createinfo(data,id) {
-    for (var i = 0; i < data.length; i++) {
-        if (id === data.metadata[i].id) {
-            var chosendata = data.metadata[i]
-            var selection1 = d3.selet(".panel-body").selectAll("div")
-                                .data(chosendata)
-            selection1.enter()
-                    .append("p")
-                    .text(function (d) {return d.id})
-        }
-    }
-}
-
-
 function buildcharts() {
     //Building the dropdown menu to choose id's
     d3.json("data/samples.json").then(function(data) {
@@ -22,46 +7,42 @@ function buildcharts() {
                             .data(listid);
         selection.enter()
                 .append("option")
+                .attr("value",function (d) {return d})
+                .merge(selection)
                 .text(function (d) {return d});
-        //var selectedoption = d3.select("#selDataset option:checked").text();
-        //console.log(selectedoption)
-        //d3.select("option").on("click",createinfo(data,))
-        //obtain the id number that was chosen then put that value in to the function so that if displays the
-        //info for that id
-        //createinfor(data,idselect);
-
+        d3.selectAll("#selDataset").on("change", handleSubmit);
     });
 }
-buildcharts();
 
-
-//function createDroplist() {
-//console.log(datanew);
-d3.select("#selDataset")
-    .selectAll("option")
-//    .data(data)
-    .enter()
-    .append("option");
-
-//}
-
-
-/*
-function makeBargraph() {
-    // Obtaining the value that was inputted
-    var entered_value = d3.select("#selDataset").property("value");
-
-    // This value will find the place that the subject id is located at
-    var listplace = (entered_value - 940);
-
+function handleSubmit() {
     d3.json("data/samples.json").then(function(data) {
-        sample_values = data[listplace].sample_values,
-        console.log(sample_values)
-        otu_ids = data[listplace].otu_ids,
-        console.log(otu_ids)
+        var idchosen = d3.selectAll("#selDataset");
+        var dataid  = idchosen.property("value")
+        var dataid = parseInt(dataid)
+        var datalist = data.metadata;
+        d3.selectAll("p").text("")
+        for (var i=0;i< datalist.length;i++){
+            if (dataid === datalist[i].id){
+                var chosendata = [{"id":datalist[i].id},{"ethnicity":datalist[i].ethnicity},{"gender":datalist[i].gender},{"age":datalist[i].age},{"location":datalist[i].location},{"bbtype":datalist[i].bbtype},{"wfreq":datalist[i].wfreq}];
+                var selection1 = d3.selectAll("#sample-metadata").selectAll("p")
+                                .data(chosendata);
+                console.log(chosendata)
+                selection1.enter()
+                        .append("p")
+                        .merge(selection1)
+                        .text(function (d) {return d})
+
+                break
+            }
+        }
     })
 }
 
+
+
+
+buildcharts();
+/*
 
 var trace1 = {
     type: "bar",
