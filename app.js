@@ -3,16 +3,18 @@ function unpack(rows, index) {
       return row[index];
     });
 }
-datasource  = d3.json("data/samples.json");
-//lengthdatasource = datasource.samples.length;
-//console.log(lengthdatasource);
+
+// Obtain the length of the data.samples
+samples = [];
+d3.json("data/samples.json").then((data) => samples.push(data.samples));
+
 
 function createDroplist() {
-    var droplist = d3.select(".well");
-    var droplist2 = droplist.select("#selDataset");
-    var data = d3.json("data/samples.json")
-    var listofsamples = data.samples.length;
-    for (var i = 0; i <listofsamples; i++) {
+   // var droplist = d3.select(".well");
+    var droplist2 = d3.select("#selDataset");
+    lenghtlist = samples[0].length;
+    console.log(lenghtlist);
+    for (var i = 0; i < lenghtlist; i++) {
         document.write(`<option value =${i}>${data.samples[i].id}</option>`);
     }
 }
