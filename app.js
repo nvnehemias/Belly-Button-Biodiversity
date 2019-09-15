@@ -1,23 +1,51 @@
-function unpack(rows, index) {
-    return rows.map(function(row) {
-      return row[index];
-    });
-}
 
-// Obtain the length of the data.samples
-samples = [];
-d3.json("data/samples.json").then((data) => samples.push(data.samples));
-
-
-function createDroplist() {
-   // var droplist = d3.select(".well");
-    var droplist2 = d3.select("#selDataset");
-    lenghtlist = samples[0].length;
-    console.log(lenghtlist);
-    for (var i = 0; i < lenghtlist; i++) {
-        document.write(`<option value =${i}>${data.samples[i].id}</option>`);
+function createinfo(data,id) {
+    for (var i = 0; i < data.length; i++) {
+        if (id === data.metadata[i].id) {
+            var chosendata = data.metadata[i]
+            var selection1 = d3.selet(".panel-body").selectAll("div")
+                                .data(chosendata)
+            selection1.enter()
+                    .append("p")
+                    .text(function (d) {return d.id})
+        }
     }
 }
+
+
+function buildcharts() {
+    //Building the dropdown menu to choose id's
+    d3.json("data/samples.json").then(function(data) {
+        var listid = data.names;
+        //We will append a list of option to our html
+        var selection = d3.select("select").selectAll("option")
+                            .data(listid);
+        selection.enter()
+                .append("option")
+                .text(function (d) {return d});
+        //var selectedoption = d3.select("#selDataset option:checked").text();
+        //console.log(selectedoption)
+        //d3.select("option").on("click",createinfo(data,))
+        //obtain the id number that was chosen then put that value in to the function so that if displays the
+        //info for that id
+        //createinfor(data,idselect);
+
+    });
+}
+buildcharts();
+
+
+//function createDroplist() {
+//console.log(datanew);
+d3.select("#selDataset")
+    .selectAll("option")
+//    .data(data)
+    .enter()
+    .append("option");
+
+//}
+
+
 /*
 function makeBargraph() {
     // Obtaining the value that was inputted
