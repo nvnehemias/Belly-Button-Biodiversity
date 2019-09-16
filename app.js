@@ -1,5 +1,3 @@
-//Create a default page 
-
 
 function buildropdown() {
     //Building the dropdown menu to choose id's
@@ -36,11 +34,12 @@ function handleSubmit() {
                         .append("p")
                         .merge(selection1)
                         .text(function (d) {return `${Object.keys(d)}: ${Object.values(d)}`})
+                var sampleslist = data.samples
+                createTable(dataidstring,sampleslist);
+                gaugefunction(datalist[i].wfreq)
                 break
             }
         }
-        var sampleslist = data.samples
-        createTable(dataidstring,sampleslist);
     })
 }
 
@@ -61,7 +60,7 @@ function createTable(chosen,list) {
             }]
             var layout = {
                 height: 500,
-                width: 300
+                width: 400
             }
             Plotly.newPlot('bar', data, layout);
         }
@@ -103,6 +102,89 @@ function createBubble(x,y,markervalue,label) {
         width: 1250
       };
     Plotly.newPlot('bubble', data, layout);
+
 }
+
+function gaugefunction(wfreq){
+    var traceA = {
+        type: "pie",
+        showlegend: false,
+        hole: 0.4,
+        rotation: 90,
+        values: [81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81/9, 81],
+        text: ["0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9",""],
+        direction: "clockwise",
+        textinfo: "text",
+        textposition: "inside",
+        marker: {
+          colors: ['rgba(14, 127, 0,.5)', 
+          'rgba(60, 154, 10, .5)',
+          'rgba(110, 154, 22, .5)',
+          'rgba(145, 154, 33, .5)',
+          'rgba(170, 202, 42, .5)', 
+          'rgba(190, 154, 72, .5)',
+          'rgba(202, 209, 95, .5)',
+          'rgba(210, 206, 145, .5)',
+          'rgba(230, 235, 200, .5)',
+          'rgba(255, 255, 255, 0)', 
+          "white"]
+        },
+        labels: ["0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9",""],
+        hoverinfo: "label"
+      };
+      
+      var degrees = 115, radius = .6;
+      var radians = degrees * Math.PI / 180;
+      var x = -1 * radius * Math.cos(radians);
+      var y = radius * Math.sin(radians);
+
+      y0value = LinePosition(wfreq)
+      console.log(y0value);
+      
+      var layout = {
+        shapes:[{
+            type: 'line',
+            x0: 0,
+            y0: y0value,
+            x1: 0.5,
+            y1: 0.5,
+            line: {
+              color: 'black',
+              width: 2
+            }
+          }],
+        title: 'Belly Button Washing Frequency',
+        height: 500,
+        width: 600,
+        xaxis: {visible: false, range: [-1, 1]},
+        yaxis: {visible: false, range: [-1, 1]}
+      };
+      
+      
+      
+      var data = [traceA];
+      
+    Plotly.plot("gauge", data, layout, {staticPlot: true});
+}
+
+function LinePosition(value){
+    switch (value) {
+        case 0:
+            return 0.4;
+            break;
+        case 1:
+            return 0.9;
+            break;
+        case 2:
+            return 0.9;
+            break;
+        case 3:
+            return 1.3;
+            break;
+        case 4:
+            return 1.3;
+            break;
+    };
+};
 
 buildropdown();
