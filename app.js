@@ -83,7 +83,7 @@ function createBubble(x,y,markervalue,label) {
         text: label,
         mode: "markers",
         marker: {
-            color: colors,
+            color: x,
             size: markervalue
         }
     };
@@ -91,8 +91,8 @@ function createBubble(x,y,markervalue,label) {
     var layout = {
         title: 'Marker Size',
         showlegend: false,
-        height: 600,
-        width: 1050
+        height: 550,
+        width: 1250
       };
     Plotly.newPlot('bubble', data, layout);
 }
