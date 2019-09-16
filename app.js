@@ -41,39 +41,60 @@ function handleSubmit() {
 }
 
 function createTable(chosen,list) {
-    console.log("this is test for new function");
     //We are looking through so see wich samples will be used when matched with the id chosen
     for (var i = 0;i<list.length;i++){
         if (chosen === list[i].id){
-            var bar_chart_value = list[i].sample_values.slice(0,10);
-            var otu_ids = list[i].otu_ids.slice(0,10);
-            var otu_ids = otu_ids.map(value => "OTU "+value)
-            var otu_labels = list[i].otu_labels.slice(0,10);
-            console.log(otu_labels);
+            var bar_chart_value = list[i].sample_values;
+            var otu_ids_old = list[i].otu_ids;
+            var otu_ids = otu_ids_old.map(value => "OTU "+value).slice(0,10);
+            var otu_labels = list[i].otu_labels;
             var data = [{
                 type: "bar",
-                x : bar_chart_value.reverse(),
+                x : bar_chart_value.slice(0,10).reverse(),
                 y : otu_ids.reverse(),
+                text: otu_labels.slice(0,10),
                 orientation: 'h'
             }]
             Plotly.newPlot('bar', data)
         }
     }
+    createBubble(otu_ids_old,bar_chart_value,bar_chart_value,otu_labels);
 };
 
+function createBubble(x,y,markervalue,label) {
 
+    //Generate a list random colors using for loop and Math.random()
+    colors = []
+    for (var i=0;i<markervalue.length;i++){
+        mylist = [];
+        for (var j=1; j<226;j++){
+            mylist.push(j);
+        };
+        var rand1 = mylist[Math.floor(Math.random() * mylist.length)];
+        var rand2 = mylist[Math.floor(Math.random() * mylist.length)];
+        var rand3 = mylist[Math.floor(Math.random() * mylist.length)];
+        colors.push(`rgb(${rand1},${rand2},${rand3})`); 
+    }
+
+    //Create the traces for the bubble graph
+    var trace = {
+        x: x,
+        y: y,
+        text: label,
+        mode: "markers",
+        marker: {
+            color: colors,
+            size: markervalue
+        }
+    };
+    var data = [trace];
+    var layout = {
+        title: 'Marker Size',
+        showlegend: false,
+        height: 600,
+        width: 1050
+      };
+    Plotly.newPlot('bubble', data, layout);
+}
 
 buildropdown();
-/*
-
-var trace1 = {
-    type: "bar",
-    sample_values : [],
-    y : [],
-    orientation : "h"
-};
-
-var data = [trace1];
-Plotly.newPlot("",data)
-
-*/
