@@ -1,9 +1,13 @@
 //Create a default page 
 
+
 function buildropdown() {
     //Building the dropdown menu to choose id's
     d3.json("data/samples.json").then(function(data) {
-        var listid = data.names;
+        listid = [""]
+        for (var i=0;i<data.names.length;i++){
+            listid.push(data.names[i]);
+        }
         //We will append a list of option to our html
         var selection = d3.select("select").selectAll("option")
                             .data(listid);
@@ -55,7 +59,11 @@ function createTable(chosen,list) {
                 text: otu_labels.slice(0,10),
                 orientation: 'h'
             }]
-            Plotly.newPlot('bar', data)
+            var layout = {
+                height: 500,
+                width: 300
+            }
+            Plotly.newPlot('bar', data, layout);
         }
     }
     createBubble(otu_ids_old,bar_chart_value,bar_chart_value,otu_labels);
